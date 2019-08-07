@@ -1953,7 +1953,6 @@
 								sims.affectMotive("bladder", 100)
 								sims.affectMotive("hygiene", -5)
 							else
-								message = "<B>[src]</B> pisses all over the floor!"
 								src.urinate()
 								sims.affectMotive("bladder", 100)
 								sims.affectMotive("hygiene", -50)
@@ -1976,7 +1975,6 @@
 									else
 										wear_suit.name = "piss-soaked [initial(wear_suit.name)]"
 								else
-									message = "<B>[src]</B> pisses all over the floor!"
 									src.urinate()
 									sims.affectMotive("bladder", 100)
 									sims.affectMotive("hygiene", -50)
@@ -1989,7 +1987,6 @@
 							T.clogged += 0.10
 							break
 					else
-						message = pick("<B>[src]</B> unzips their pants and pees on the floor.", "<B>[src]</B> pisses all over the floor!", "<B>[src]</B> makes a big piss puddle on the floor.")
 						src.urine--
 						src.urinate()
 					for(var/mob/living/carbon/human/M in viewers(src, null))

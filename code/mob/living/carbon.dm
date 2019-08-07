@@ -227,6 +227,20 @@
 
 /mob/living/carbon/proc/urinate()
 	spawn(0)
+		var/obj/item/reagent_containers/pee_target = src.find_type_in_hand(/obj/item/reagent_containers, "[src.hand ? "left" : "right"]")
+		if(!isnull(pee_target) && pee_target.reagents.total_volume < pee_target.reagents.maximum_volume && ( \
+			istype(pee_target, /obj/item/reagent_containers/balloon) || \
+			istype(pee_target, /obj/item/reagent_containers/food/drinks/drinkingglass) || \
+			istype(pee_target, /obj/item/reagent_containers/glass/beaker) || \
+			istype(pee_target, /obj/item/reagent_containers/glass/wateringcan)
+			))
+			src.visible_message("<span style=\"color:red\"><B>[src] pees in [pee_target]!</B></span>")
+			playsound(get_turf(src), "sound/misc/pourdrink.ogg", 50, 1)
+			pee_target.reagents.add_reagent("urine", 20)
+			return
+
+		// possibly change the text colour to the gray emote text
+		src.visible_message("<B>[src]</B> pisses all over the floor!")
 		var/obj/decal/cleanable/urine/U = new(src.loc)
 
 		// Flag the urine stain if the pisser is trying to make fake initropidril
