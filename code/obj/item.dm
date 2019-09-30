@@ -32,6 +32,8 @@
 
 	var/image/wear_image = null
 	var/wear_image_icon = 'icons/mob/belt.dmi'
+	var/image/inhand_image_r = null
+	var/image/inhand_image_l = null
 	var/image/inhand_image = null
 	var/inhand_image_icon = 'icons/mob/inhand/hand_general.dmi'
 
