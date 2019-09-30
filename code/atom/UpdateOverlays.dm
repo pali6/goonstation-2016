@@ -211,7 +211,12 @@ ClearSpecificOverlays(1, "key0", "key1", "key2") 	//Same as above but retains ca
 /////////////////////////////////////////////
 /proc/hash_image(var/image/I)
 	if(I)
-		. = md5("\ref[I][I.icon_state][I.overlays ? I.overlays.len : 0][I.color][I.alpha]")
+		var/overlays = 0
+		if(I.overlays)
+			overlays = ""
+			for(var/O in I.overlays) // feel free to replace with something better if you figure ot what is the actual type of O, I have no clue
+				overlays += "\ref[O]"
+		. = md5("\ref[I][I.icon_state][overlays][I.color][I.alpha]")
 	else
 		. = null
 
