@@ -569,7 +569,7 @@
 			if (!istype(src.limbs.r_arm, /obj/item/parts/human_parts/arm/right/item) && istype(src.r_hand, /obj/item))
 				var/obj/item/I = src.r_hand
 				if (I.inhand_image_r)
-					I.inhand_image = inhand_image_r
+					I.inhand_image = I.inhand_image_r
 				else
 					if (!I.inhand_image)
 						I.inhand_image = image(I.inhand_image_icon, "", MOB_INHAND_LAYER)
@@ -583,7 +583,7 @@
 			if (!istype(src.limbs.l_arm, /obj/item/parts/human_parts/arm/left/item) && istype(src.l_hand, /obj/item))
 				var/obj/item/I = src.l_hand
 				if (I.inhand_image_l)
-					I.inhand_image = inhand_image_l
+					I.inhand_image = I.inhand_image_l
 				else
 					if (!I.inhand_image)
 						I.inhand_image = image(I.inhand_image_icon, "", MOB_INHAND_LAYER)
