@@ -73,8 +73,17 @@
 	genome = 19
 	assoc_reagents = list("water")
 	nectarlevel = 15
-	mutations = list(/datum/plantmutation/melon/george)
+	mutations = list(/datum/plantmutation/melon/george, /datum/plantmutation/melon/balloon)
 	commuts = list(/datum/plant_gene_strain/immortal,/datum/plant_gene_strain/seedless)
+
+	HYPinfusionP(var/obj/item/seed/S,var/reagent)
+		..()
+		var/datum/plantgenes/DNA = S.plantgenes
+		if (!DNA) return
+		switch(reagent)
+			if("helium")
+				if (prob(50))
+					DNA.mutation = HY_get_mutation_from_path(/datum/plantmutation/melon/balloon)
 
 /datum/plant/chili
 	name = "Chili"

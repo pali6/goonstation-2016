@@ -89,6 +89,12 @@
 	crop = /obj/item/reagent_containers/food/snacks/plant/melon/george
 	assoc_reagents = list("george_melonium")
 
+/datum/plantmutation/melon/balloon
+	name = "Balloons"
+	crop = /obj/item/reagent_containers/balloon
+	iconmod = "balloon"
+	assoc_reagents = list("helium")
+
 // Chili Mutations
 
 /datum/plantmutation/chili/chilly
