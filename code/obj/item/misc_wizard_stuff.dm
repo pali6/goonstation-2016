@@ -164,6 +164,9 @@
 			else
 				src.do_brainmelt(user, 2)
 				return
+		else
+			src.do_brainmelt(user, 2)
+			return
 		else ..()
 
 	attack(mob/M as mob, mob/user as mob)
