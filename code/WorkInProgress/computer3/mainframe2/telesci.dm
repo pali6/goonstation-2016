@@ -1037,7 +1037,7 @@ var/telesci_modifiers_set = 0
 				coord_update_flag = 0
 				message_host("command=teleman&args=-p [padNum] coords x=[xtarget] y=[ytarget] z=[ztarget]")
 
-			message_host("command=teleman&args=scan")
+			message_host("command=teleman&args=-p [padNum] scan")
 			src.updateUsrDialog(1)
 			return
 
