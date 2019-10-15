@@ -75,7 +75,7 @@
 
 		var/wrong_tool = 0
 
-		if(remove_stage > 1 && tool.type == /obj/item/staple_gun)
+		if(remove_stage > 1 && istype(tool, /obj/item/staple_gun))
 			remove_stage = 0
 
 		else if(remove_stage == 0 || remove_stage == 2)
