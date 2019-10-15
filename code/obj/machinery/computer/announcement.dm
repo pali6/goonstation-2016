@@ -122,7 +122,7 @@
 			minutes = minutes < 10 ? "0[minutes]" : "[minutes]"
 			seconds = seconds < 10 ? "0[seconds]" : "[seconds]"
 
-			return "[minutes][seconds % 2 == 0 ? ":" : " "][seconds]"
+			return "[minutes]:[seconds]"
 
 	proc/get_time()
 		return max(((last_announcement + announcement_delay) - world.timeofday ) / 10, 0)
