@@ -650,6 +650,8 @@ PIPE BOMBS + CONSTRUCTION
 	afterattack(atom/target as mob|obj|turf|area, mob/user as mob)
 		if (user.equipped() == src)
 			if (!src.state)
+				if (istype(target, /obj/item/storage)) // no blowing yourself up if you have full backpack
+					return
 				if (user.bioHolder && user.bioHolder.HasEffect("clumsy"))
 					boutput(user, "<span style=\"color:red\">Huh? How does this thing work?!</span>")
 					logTheThing("combat", user, null, "accidentally triggers [src] (clumsy bioeffect) at [log_loc(user)].")
