@@ -3428,7 +3428,7 @@
 		if (src.active)
 			boutput(usr, "<span style=\"color:red\">You can't unload it while it's active!</span>")
 			return
-		for (var/obj/O in src.contents) O.set_loc(over_object)
+		for (var/O in src.contents) O.set_loc(over_object)
 		src.visible_message("<b>[M.name]</b> unloads [src.name]!")
 		src.update_icon()
 
