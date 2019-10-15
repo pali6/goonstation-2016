@@ -453,8 +453,8 @@
 		RHITM:layer = initial(RHITM:layer)
 
 	if(pickup && !src.r_hand)
-		pickup.set_loc(src)
-		src.r_hand = pickup
+		src.hand_attack(pickup)
+		//src.put_in_hand_or_drop(pickup, 1)
 
 	src.set_clothing_icon_dirty()
 
