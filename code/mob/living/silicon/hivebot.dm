@@ -58,6 +58,7 @@
 	jetpack = 1
 	health = 40
 	self_destruct = 1
+	robot_talk_understand = 1
 
 	New()
 		..()
