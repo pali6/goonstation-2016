@@ -16,12 +16,12 @@
 
 var/list/datum/reagents/active_reagent_holders = list()
 
-proc/chem_helmet_check(mob/living/carbon/human/H)
+proc/chem_helmet_check(mob/living/carbon/human/H, var/what_liquid="hot")
 	if(H.wear_mask)
-		boutput(H, "<span style=\"color:red\">Your mask protects you from the hot liquid!</span>")
+		boutput(H, "<span style=\"color:red\">Your mask protects you from the [what_liquid] liquid!</span>")
 		return 0
 	else if(H.head)
-		boutput(H, "<span style=\"color:red\">Your helmet protects you from the hot liquid!</span>")
+		boutput(H, "<span style=\"color:red\">Your helmet protects you from the [what_liquid] liquid!</span>")
 		return 0
 	return 1
 
@@ -422,13 +422,13 @@ datum
 					var/mob/living/carbon/human/H = A
 					if(istype(H))
 						if(total_temperature > H.base_body_temp + (H.temp_tolerance * 4) && !H.is_heat_resistant())
-							if (chem_helmet_check(H))
+							if (chem_helmet_check(H, "hot"))
 								boutput(H, "<span style=\"color:red\">You are scalded by the hot chemicals!</span>")
 								H.TakeDamage("head", 0, round(log(total_temperature / 50) * 10), 0, DAMAGE_BURN) // lol this caused brute damage
 								H.emote("scream")
 								H.bodytemperature += min(max((total_temperature - T0C) - 20, 5),500)
 						else if(total_temperature < H.base_body_temp - (H.temp_tolerance * 4) && !H.is_cold_resistant())
-							if (chem_helmet_check(H))
+							if (chem_helmet_check(H, "cold"))
 								boutput(H, "<span style=\"color:red\">You are frostbitten by the freezing cold chemicals!</span>")
 								H.TakeDamage("head", 0, round(log(T0C - total_temperature / 50) * 10), 0, DAMAGE_BURN)
 								H.emote("scream")
