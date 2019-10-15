@@ -1537,7 +1537,9 @@
 	var/datum/manufacture/blueprint = null
 
 	New(var/loc,var/schematic = null)
-		if (!schematic)
+		if(istype(schematic, /datum/manufacture))
+			src.blueprint = schematic
+		else if (!schematic)
 			if (ispath(src.blueprint))
 				src.blueprint = get_schematic_from_path(src.blueprint)
 			else

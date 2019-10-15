@@ -561,7 +561,7 @@
 							src.no_print_spam = world.time
 							spawn (50)
 								if (src)
-									new /obj/item/paper/manufacturer_blueprint(src.loc, M.name)
+									new /obj/item/paper/manufacturer_blueprint(src.loc, M)
 
 		updateDialog()
 	else
