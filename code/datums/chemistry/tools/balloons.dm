@@ -35,7 +35,7 @@
 
 	proc/update_icon()
 		if (src.reagents && src.reagents.total_volume > 0)
-			if (src.reagents.has_reagent("helium"))
+			if (src.reagents.has_reagent("helium") || src.reagents.has_reagent("hydrogen"))
 				src.icon_state = "balloon_[src.balloon_color]_inflated"
 				src.item_state = "balloon_[src.balloon_color]_inflated"
 			else
@@ -50,7 +50,7 @@
 		if (!src.reagents)
 			return
 		if (!ohshit)
-			ohshit = (src.reagents.total_volume / 30) * 33
+			ohshit = (src.reagents.total_volume / (src.reagents.maximum_volume - 10)) * 33
 		if (prob(ohshit))
 			smash()
 			if (user)
