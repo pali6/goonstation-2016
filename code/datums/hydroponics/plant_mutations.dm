@@ -90,10 +90,41 @@
 	assoc_reagents = list("george_melonium")
 
 /datum/plantmutation/melon/balloon
-	name = "Balloons"
+	name = "Balloon... Melons?"
 	crop = /obj/item/reagent_containers/balloon
 	iconmod = "balloon"
 	assoc_reagents = list("helium")
+
+/datum/plantmutation/melon/hindenballoon
+	name = "Balloon... Melons?"
+	crop = /obj/item/reagent_containers/balloon
+	iconmod = "balloon"
+	assoc_reagents = list("hydrogen")
+
+/datum/plantmutation/melon/bowling
+	name = "Bowling Melons"
+	crop = /obj/item/reagent_containers/food/snacks/plant/melon/bowling
+	ENrange = list(20,null)
+	chance = 20
+	special_proc_override = 1
+
+	HYPspecial_proc_M(var/obj/machinery/plantpot/POT)
+		..()
+		if (.) return
+		var/datum/plantgenes/DNA = POT.plantgenes
+
+		var/thud_prob = max(0,min(100, DNA.endurance / 2))
+
+		if (prob(thud_prob))
+			playsound(POT.loc, "sound/effects/exlow.ogg", 30, 1)
+			var/wiggle = 4
+			while(wiggle > 0)
+				wiggle--
+				POT.pixel_x = rand(-2,2)
+				POT.pixel_y = rand(-2,2)
+				sleep(1)
+			POT.pixel_x = 0
+			POT.pixel_y = 0
 
 // Chili Mutations
 

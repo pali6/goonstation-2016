@@ -246,11 +246,20 @@
 			var/turf/T = get_turf(src)
 			user.visible_message("[user] cuts [src] into slices.", "You cut [src] into slices.")
 			var/makeslices = 6
+			var/amount_per_slice = 0
+			if(src.reagents)
+				amount_per_slice = src.reagents.total_volume / makeslices
+				src.reagents.inert = 1
 			while (makeslices > 0)
 				var/obj/item/reagent_containers/food/snacks/plant/melonslice/P = new(T)
 				var/datum/plantgenes/DNA = src.plantgenes
 				var/datum/plantgenes/PDNA = P.plantgenes
 				HYPpassplantgenes(DNA,PDNA)
+				if(src.reagents)
+					P.reagents = new
+					P.reagents.inert = 1 // no stacking of potassium + water explosions on cutting
+					src.reagents.trans_to(P, amount_per_slice)
+					P.reagents.inert = 0
 				makeslices -= 1
 			qdel (src)
 		..()
@@ -284,11 +293,20 @@
 			var/turf/T = get_turf(src)
 			user.visible_message("[user] cuts [src] into slices.", "You cut [src] into slices.")
 			var/makeslices = 6
+			var/amount_per_slice = 0
+			if(src.reagents)
+				amount_per_slice = src.reagents.total_volume / makeslices
+				src.reagents.inert = 1
 			while (makeslices > 0)
 				var/obj/item/reagent_containers/food/snacks/plant/melonslice/george/P = new(T)
 				var/datum/plantgenes/DNA = src.plantgenes
 				var/datum/plantgenes/PDNA = P.plantgenes
 				HYPpassplantgenes(DNA,PDNA)
+				if(src.reagents)
+					P.reagents = new
+					P.reagents.inert = 1 // no stacking of potassium + water explosions on cutting
+					src.reagents.trans_to(P, amount_per_slice)
+					P.reagents.inert = 0
 				makeslices -= 1
 			qdel (src)
 		..()
@@ -319,7 +337,107 @@
 
 	New()
 		..()
-		reagents.add_reagent("george_melonium",25)
+		reagents.add_reagent("george_melonium",20)
+
+
+/obj/item/reagent_containers/food/snacks/plant/melon/bowling
+	name = "bowling melon"
+	desc = "Just keep rollin' rollin'."
+	icon = 'icons/obj/items.dmi'
+	icon_state = "bowling_melon"
+	var/base_icon_state = "bowling_melon"
+	var/already_burst = 0
+	w_class = 3.0
+	force = 5
+	throw_speed = 1
+
+	proc/damage(var/mob/hitMob, damMin, damMax, var/mob/living/carbon/human/user)
+		if(user.w_uniform && istype(user.w_uniform, /obj/item/clothing/under/gimmick/bowling))
+			hitMob.weakened = max(damMax-10, hitMob.weakened)
+			hitMob.stuttering = max(damMax-5, hitMob.stuttering)
+			//hitMob.stunned = max(damMax-10, hitMob.stunned) // I'd rather just not have this be strictly better bowling balls? idk, uncomment if you want them to stun with the suit
+			hitMob.TakeDamage("chest", rand(damMin, damMax), 0)
+		else
+			// kyle wanted to add disorient here I think?
+			hitMob.stuttering = max(damMax-5, hitMob.stuttering)
+			hitMob.TakeDamage("chest", rand(damMin, damMax), 0)
+
+	throw_at(atom/target, range, speed)
+		throw_unlimited = 1
+		if(target.x > src.x || (target.x == src.x && target.y > src.y))
+			src.icon_state = "[base_icon_state]_spin_right"
+		else
+			src.icon_state = "[base_icon_state]_spin_left"
+		..(target, range, speed)
+
+	attack_hand(mob/user as mob)
+		..()
+		if(user)
+			src.icon_state = base_icon_state
+
+	proc/hitWeak(var/mob/hitMob, var/mob/user)
+		hitMob.visible_message("<span style=\"color:red\">[hitMob] is hit by [user]'s [src]!</span>")
+		// look these numbers are pulled out of my ass, change them if things are too broken / too weak
+		var/dmg = min(12, src.plantgenes.endurance / 7)
+		src.damage(hitMob, dmg, dmg + 5, user)
+
+	proc/hitHard(var/mob/hitMob, var/mob/user)
+		hitMob.visible_message("<span style=\"color:red\">[hitMob] is knocked over by [user]'s [src]!</span>")
+		var/dmg = min(20, src.plantgenes.endurance / 5 + 3)
+		src.damage(hitMob, dmg, dmg + 5, user)
+
+	throw_impact(atom/hit_atom)
+		var/mob/living/carbon/human/user = usr
+
+		if(hit_atom)
+			playsound(src.loc, "sound/effects/exlow.ogg", 65, 1)
+			if (ismob(hit_atom))
+				var/mob/hitMob = hit_atom
+				if (ishuman(hitMob))
+					spawn( 0 )
+						if (istype(user))
+							if (user.w_uniform && istype(user.w_uniform, /obj/item/clothing/under/gimmick/bowling))
+								src.hitHard(hitMob, user)
+
+								if(!(hitMob == user))
+									user.say(pick("Who's the kingpin now, baby?", "STRIIIKE!", "Watch it, pinhead!", "Ten points!"))
+							else
+								src.hitWeak(hitMob, user)
+						else
+							src.hitWeak(hitMob, user)
+			if(already_burst)
+				return
+			already_burst = 1
+			src.icon_state = "[base_icon_state]_burst"
+			sleep(1)
+			var/n_slices = rand(1, 5)
+			var/amount_per_slice = 0
+			if(src.reagents)
+				amount_per_slice = src.reagents.total_volume / 5
+				src.reagents.inert = 1
+			while(n_slices)
+				var/obj/item/reagent_containers/food/snacks/plant/melonslice/slice = new(get_turf(src))
+				if(src.reagents)
+					slice.reagents = new
+					// temporary inert is here so this doesn't hit people with 5 potassium + water explosions at once
+					slice.reagents.inert = 1
+					src.reagents.trans_to(slice, amount_per_slice)
+					slice.reagents.inert = 0
+				var/datum/plantgenes/DNA = src.plantgenes
+				var/datum/plantgenes/PDNA = slice.plantgenes
+				HYPpassplantgenes(DNA,PDNA)
+				if(istype(hit_atom, /mob/living) && prob(1))
+					var/mob/living/dork = hit_atom
+					boutput(slice, "A melon slice hits [dork] right in the mouth!")
+					slice.Eat(dork, dork)
+				else
+					var/target = get_turf(pick(orange(4, src)))
+					spawn(0)
+						slice.throw_at(target, rand(0, 10), range(1, 4))
+				n_slices--
+			sleep(1)
+			qdel(src)
+		return
 
 
 /obj/item/reagent_containers/food/snacks/plant/chili/

@@ -73,8 +73,9 @@
 	genome = 19
 	assoc_reagents = list("water")
 	nectarlevel = 15
-	mutations = list(/datum/plantmutation/melon/george, /datum/plantmutation/melon/balloon)
+	mutations = list(/datum/plantmutation/melon/george, /datum/plantmutation/melon/bowling)
 	commuts = list(/datum/plant_gene_strain/immortal,/datum/plant_gene_strain/seedless)
+	special_proc = 1 // my sincerest apologies for this, it's there only for a dumb effect on the bowling melons
 
 	HYPinfusionP(var/obj/item/seed/S,var/reagent)
 		..()
@@ -84,6 +85,9 @@
 			if("helium")
 				if (prob(50))
 					DNA.mutation = HY_get_mutation_from_path(/datum/plantmutation/melon/balloon)
+			if("hydrogen")
+				if (prob(50))
+					DNA.mutation = HY_get_mutation_from_path(/datum/plantmutation/melon/hindenballoon)
 
 /datum/plant/chili
 	name = "Chili"

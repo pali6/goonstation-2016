@@ -643,10 +643,10 @@
 				UpdateOverlays(null, "health_display")
 
 		var/planticon = null
-		if (growing.sprite)
-			planticon = "[growing.sprite]-G[src.grow_level]"
-		else if (MUT && MUT.iconmod)
+		if (MUT && MUT.iconmod)
 			planticon = "[MUT.iconmod]-G[src.grow_level]"
+		else if (growing.sprite)
+			planticon = "[growing.sprite]-G[src.grow_level]"
 		else if (growing.special_icon)
 			planticon = "[growing.special_icon]-G[src.grow_level]"
 		else
@@ -912,7 +912,7 @@
 					HYPadd_harvest_reagents(F,growing,DNA,quality_status)
 					// We also want to put any reagents the plant produces into the new item.
 
-				else if (istype(CROP,/obj/item/plant/) || istype(CROP,/obj/item/reagent_containers/balloon))
+				else if (istype(CROP,/obj/item/plant/))
 					// If we've got a herb or some other thing like wheat or shit like that.
 					HYPadd_harvest_reagents(CROP,growing,DNA,quality_status)
 
@@ -964,6 +964,11 @@
 				else if (istype(CROP,/obj/item/organ/heart))
 					var/obj/item/organ/heart/H = CROP
 					H.quality = quality_score
+
+				else if (istype(CROP,/obj/item/reagent_containers/balloon))
+					var/obj/item/reagent_containers/balloon/B = CROP
+					B.reagents.maximum_volume = B.reagents.maximum_volume + DNA.endurance // more endurance = larger and more sturdy balloons!
+					HYPadd_harvest_reagents(CROP,growing,DNA,quality_status)
 
 				if (((growing.isgrass || growing.force_seed_on_harvest) && prob(80)) && !istype(CROP,/obj/item/seed/) && !HYPCheckCommut(DNA,/datum/plant_gene_strain/seedless))
 					// Same shit again. This isn't so much the crop as it is giving you seeds
@@ -1232,7 +1237,8 @@ proc/HYPadd_harvest_reagents(var/obj/item/I,var/datum/plant/growing,var/datum/pl
 	if (special_condition == "jumbo")
 		basecapacity *= 2
 
-	I.reagents.maximum_volume = basecapacity + DNA.potency
+	var/to_add = basecapacity + DNA.potency
+	I.reagents.maximum_volume = max(basecapacity + DNA.potency, I.reagents.maximum_volume)
 	if (I.reagents.maximum_volume < 1)
 		I.reagents.maximum_volume = 1
 	// Now we add the plant's potency to their max reagent capacity. If this causes it to fall
@@ -1251,7 +1257,7 @@ proc/HYPadd_harvest_reagents(var/obj/item/I,var/datum/plant/growing,var/datum/pl
 		putreagents |= R.reagents_to_add
 
 	if (putreagents.len && I.reagents.maximum_volume)
-		var/putamount = round(I.reagents.maximum_volume / putreagents.len)
+		var/putamount = round(to_add / putreagents.len)
 		for(var/X in putreagents)
 			I.reagents.add_reagent(X,putamount,,, 1)
 	// And finally put them in there. We figure out the max volume and add an even amount of
