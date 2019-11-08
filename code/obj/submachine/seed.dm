@@ -371,18 +371,6 @@
 			// Cap probability between 0 and 100
 			splice_chance = max(0,min(splice_chance,100))
 			if (prob(splice_chance)) // We're good, so start splicing!
-				// Create the new seed
-				var/obj/item/seed/S = new /obj/item/seed(src)
-				var/datum/plant/P = new /datum/plant(S)
-				var/datum/plantgenes/DNA = new /datum/plantgenes(S)
-				S.planttype = P
-				S.plantgenes = DNA
-				P.hybrid = 1
-				if (seed1.generation > seed2.generation)
-					S.generation = seed1.generation + 1
-				else
-					S.generation = seed2.generation + 2
-
 				var/datum/plantgenes/P1DNA = seed1.plantgenes
 				var/datum/plantgenes/P2DNA = seed2.plantgenes
 
@@ -405,6 +393,18 @@
 					else
 						dominantspecies = P2
 						dominantDNA = P2DNA
+				// Create the new seed
+				var/obj/item/seed/S = new /obj/item/seed(src)
+				var/datum/plant/P = new dominantspecies.type(S)
+				var/datum/plantgenes/DNA = new /datum/plantgenes(S)
+				S.planttype = P
+				S.plantgenes = DNA
+				P.hybrid = 1
+				if (seed1.generation > seed2.generation)
+					S.generation = seed1.generation + 1
+				else
+					S.generation = seed2.generation + 2
+
 
 				// Set up the base variables first
 				if (!dominantspecies.hybrid)
