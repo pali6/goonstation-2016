@@ -352,3 +352,10 @@
 	iconmod = "Cash"
 	crop = /obj/item/spacecash
 	chance = 20
+
+// Beans
+
+/datum/plantmutation/beans/beens
+	name = "Beens"
+	iconmod = "Been"
+	assoc_reagents = list("bee")

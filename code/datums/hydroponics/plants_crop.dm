@@ -51,6 +51,12 @@
 	genome = 6
 	vending = 0
 	commuts = list(/datum/plant_gene_strain/immunity_toxin,/datum/plant_gene_strain/metabolism_slow)
+	HYPinfusionP(var/obj/item/seed/S,var/reagent)
+		..()
+		var/datum/plantgenes/DNA = S.plantgenes
+		if (!DNA) return
+		if (reagent == "bee" && prob(20))
+			DNA.mutation = HY_get_mutation_from_path(/datum/plantmutation/beans/beens)
 
 /datum/plant/corn
 	name = "Corn"
