@@ -393,6 +393,9 @@
 				C.account = src.account
 				boutput(usr, "<span style=\"color:blue\">[target] has been marked with your account routing information.</span>")
 				C.desc = "[C] belongs to [scan.registered]."
+			if(istype(target, /obj/storage/crate))
+				var/obj/storage/crate/C = target
+				C.update_icon()
 			qdel(src)
 		return
 

@@ -10,6 +10,16 @@
 	throwforce = 50 //ouch
 	can_flip_bust = 1
 
+	get_desc()
+		. = ..()
+		if(src.delivery_destination)
+			. += "\nThere's a barcode with the code for [src.delivery_destination] on it."
+	
+	update_icon()
+		..()
+		if(src.delivery_destination)
+			src.overlays += "crate-barcode" 
+
 /obj/storage/crate/internals
 	name = "internals crate"
 	desc = "An internals crate."
