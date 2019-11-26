@@ -248,6 +248,10 @@ var/f_color_selector_handler/F_Color_Selector
 
 	//create_random_station() //--Disabled because it's making initial geometry stuff take forever. Feel free to re-enable it if it's just throwing off the time count and not actually adding workload.
 
+	bioele_load_stats()
+	bioele_shifts_since_accident++
+	bioele_save_stats()
+
 	makepowernets()
 
 	materialsResearch = new()

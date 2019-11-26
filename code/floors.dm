@@ -1274,6 +1274,11 @@
 		shaft
 			name = "Elevator Shaft"
 
+			Entered(atom/A as mob|obj)
+				if (istype(A, /mob) && !istype(A, /mob/dead))
+					bioele_accident()
+				return ..()
+
 	bloodfloor
 		name = "Bloody Floor"
 		desc = "Yuck."

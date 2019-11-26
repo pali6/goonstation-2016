@@ -575,6 +575,9 @@ var/global
 	list/deepfall = list() // list of locations for people to fall into the precursor pit area
 	list/ancientfall = list() // list of locations for people to fall into the ancient pit area
 	list/bioelefall = list() // biodome elevator shaft
+	bioele_accidents = 0
+	bioele_shifts_since_accident = 0
+
 	list/cardinal = list( NORTH, SOUTH, EAST, WEST )
 	list/ordinal = list(NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)
 	list/alldirs = list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST)

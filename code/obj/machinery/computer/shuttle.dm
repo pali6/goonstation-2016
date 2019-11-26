@@ -541,8 +541,12 @@
 	else // at top
 		var/area/start_location = locate(/area/shuttle/biodome_elevator/upper)
 		var/area/end_location = locate(/area/shuttle/biodome_elevator/lower)
+		var/accident_happened = 0
 		for(var/mob/M in end_location) // oh dear, stay behind the yellow line kids
 			spawn(1) M.gib()
+			accident_happened = 1
+		if(accident_happened)
+			bioele_accident()
 		start_location.move_contents_to(end_location, /turf/unsimulated/floor/setpieces/ancient_pit/shaft)
 		location = 0
 
@@ -552,3 +556,44 @@
 		C.location = src.location
 
 	return
+
+/obj/sign_accidents
+	name = "Elevator Safety Sign"
+	icon = 'icons/obj/decals.dmi'
+	icon_state = "accidents_sign"
+	flags = FPRINT
+	density = 0
+	anchored = 1
+
+	get_desc()
+		return "It says \"[bioele_shifts_since_accident] shifts since the last elevator accident. ([bioele_accidents] accidents in total.)\"."
+	
+	attack_hand(mob/user as mob)
+		boutput(user, "The sign says \"[bioele_shifts_since_accident] shifts since the last elevator accident. ([bioele_accidents] accidents in total.)\".")
+
+proc/bioele_load_stats()
+	var/savefile/S = LoadSavefile("data/ElevatorStats.sav")
+	if(!S)
+		return
+	var/accidents
+	S["accidents"] >> accidents
+	if(accidents)
+		bioele_accidents = accidents
+	var/shifts_since_accident
+	S["shifts_since_accident"] >> shifts_since_accident
+	if(shifts_since_accident)
+		bioele_shifts_since_accident = shifts_since_accident
+	
+proc/bioele_save_stats()
+	var/savefile/S = LoadSavefile("data/ElevatorStats.sav")
+	if(!S)
+		return
+	S["accidents"] << bioele_accidents
+	S["shifts_since_accident"] << bioele_shifts_since_accident
+
+proc/bioele_accident()
+	bioele_load_stats()
+	bioele_accidents++
+	bioele_shifts_since_accident = 0
+	bioele_save_stats()
+
