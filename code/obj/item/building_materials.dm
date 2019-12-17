@@ -126,7 +126,7 @@ MATERIAL
 			if (S.material && src.material && (S.material.mat_id != src.material.mat_id))
 				boutput(user, "<span style=\"color:red\">You can't mix different materials!</span>")
 				return
-			if (S.reinforcement && src.reinforcement && (S.reinforcement.mat_id != src.reinforcement.mat_id))
+			if (S.reinforcement != src.reinforcement || (S.reinforcement && src.reinforcement && (S.reinforcement.mat_id != src.reinforcement.mat_id)))
 				boutput(user, "<span style=\"color:red\">You can't mix different reinforcements!</span>")
 				return
 			if (S.amount >= src.max_stack)
@@ -237,6 +237,7 @@ MATERIAL
 		if (src.material && src.material.material_flags & MATERIAL_CRYSTAL)
 			L["smallwindow"] = "Thin Window"
 			L["bigwindow"] = "Large Window (2 Sheets)"
+			L["remetal"] = "Remove Reinforcement"
 
 		for(var/t in L)
 			counter++
