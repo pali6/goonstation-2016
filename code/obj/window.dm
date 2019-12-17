@@ -360,6 +360,26 @@
 				state = 1 - state
 				user.show_text("You have [src.state ? "pried the window into" : "pried the window out of"] the frame.", "blue")
 
+		else if (istype(W, /obj/item/wrench) && src.state == 0 && !src.anchored)
+			playsound(src.loc, "sound/items/Ratchet.ogg", 100, 1)
+			var/turf/T = get_turf(user)
+			boutput(user, "<span style=\"color:blue\">Now disassembling the window</span>")
+			sleep(40) // this should be a progressbar but other contruction / deconstruction things don't have them
+			// so I'll just leave it as sleep and hope someone else replaces all of these with progressbars
+			if(get_turf(user) == T)
+				boutput(user, "<span style=\"color:blue\">You dissasembled the window!</span>")
+				var/obj/item/sheet/A = new /obj/item/sheet(get_turf(src))
+				if (src.material)
+					A.setMaterial(src.material)
+				else
+					var/datum/material/M = getCachedMaterial("glass")
+					A.setMaterial(M)
+				if(!(src.dir in cardinal)) // full window takes two sheets to make
+					A.amount += 1
+				if(src.reinforcement) 
+					A.set_reinforcement(src.reinforcement)
+				qdel(src)
+
 		else if (istype(W, /obj/item/grab))
 			var/obj/item/grab/G = W
 			if (ishuman(G.affecting) && get_dist(G.affecting, src) <= 1)
