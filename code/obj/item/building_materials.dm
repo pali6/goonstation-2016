@@ -237,7 +237,8 @@ MATERIAL
 		if (src.material && src.material.material_flags & MATERIAL_CRYSTAL)
 			L["smallwindow"] = "Thin Window"
 			L["bigwindow"] = "Large Window (2 Sheets)"
-			L["remetal"] = "Remove Reinforcement"
+			if (istype(src.reinforcement))
+				L["remetal"] = "Remove Reinforcement"
 
 		for(var/t in L)
 			counter++
