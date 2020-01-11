@@ -6,8 +6,9 @@
 	g_amt = 1000
 	mats = 16
 	add_residue = 0 // Does this gun add gunshot residue when fired? Energy guns shouldn't.
-	var/capacity = 100
-	var/list/ammo_reagents = null
+	var/capacity = 100 // reagent capacity of the gun
+	var/list/ammo_reagents = null // list of reagents accepted as ammo
+	var/projectile_reagents = 0 // whether the reagents should actually get transfered to the projectiles
 
 	New()
 		create_reagents(capacity)
@@ -17,10 +18,11 @@
 		return 1
 
 	alter_projectile(var/obj/projectile/P)
-		if (!P.reagents)
-			P.reagents = new /datum/reagents(P.proj_data.cost)
-			P.reagents.my_atom = P
-		src.reagents.trans_to(P, P.proj_data.cost)
+		if(src.projectile_reagents)
+			if (!P.reagents)
+				P.reagents = new /datum/reagents(P.proj_data.cost)
+				P.reagents.my_atom = P
+			src.reagents.trans_to(P, P.proj_data.cost)
 	
 	on_reagent_change(add)
 		if(!add || !src.ammo_reagents)
@@ -59,8 +61,8 @@
 		return 0
 
 	process_ammo(var/mob/user)
-		// src.reagents.remove_any(src.current_projectile.cost)
-		// we're transferring the reagents in alter_projectile
+		if(!src.projectile_reagents)
+			src.reagents.remove_any(src.current_projectile.cost)
 		return 1
 
 	verb/empty_out()
