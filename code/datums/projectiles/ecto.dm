@@ -41,5 +41,5 @@
 				W.makeCorporeal()
 				spawn(20)
 					W.makeIncorporeal()
-				W.TakeDamage(null, 0, src.power)
+			W.TakeDamage(null, 0, src.power)
 		// add some flavourful harmless interaction when hitting humans? what about ghosts?
