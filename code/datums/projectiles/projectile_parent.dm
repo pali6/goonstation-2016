@@ -417,6 +417,7 @@ datum/projectile
 
 	// Self-explanatory.
 	var/hits_ghosts = 0
+	var/hits_wraiths = 1
 
 	proc
 		hit_ground()
