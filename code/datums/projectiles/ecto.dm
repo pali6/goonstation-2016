@@ -4,7 +4,7 @@
 	icon_state = "ecto"
 
 //How much of a punch this has, tends to be seconds/damage before any resist
-	power = 10
+	power = 6
 //How much ammo this costs
 	cost = 20
 //How fast the power goes away
