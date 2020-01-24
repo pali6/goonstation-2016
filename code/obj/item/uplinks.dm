@@ -600,6 +600,7 @@ Note: Add new traitor items to syndicate_buylist.dm, not here.
 		src.spells += new /datum/SWFuplinkspell/pandemonium(src)
 		//src.spells += new /datum/SWFuplinkspell/shockwave(src)
 		src.spells += new /datum/SWFuplinkspell/bull(src)
+		src.spells += new /datum/SWFuplinkspell/stickstosnakes(src)
 
 /datum/SWFuplinkspell
 	var/name = "Spell"
@@ -783,6 +784,13 @@ Note: Add new traitor items to syndicate_buylist.dm, not here.
 	desc = "This spell allows you to turn a reagent you currently hold (in a jar, bottle or other container) into a golem. Golems will attack your enemies, and release their contents as chemical smoke when destroyed."
 	cooldown = 50
 	assoc_spell = /datum/targetable/spell/golem
+
+/datum/SWFuplinkspell/stickstosnakes
+	name = "Sticks to Snakes"
+	eqtype = "Utility"
+	desc = "This spell allows you to turn an item into a snake. If you target a person the item in their hand will transform instead. When destroyed the snake reverts back to the original item."
+	cooldown = 5 // TODO
+	assoc_spell = /datum/targetable/spell/stickstosnakes
 
 /datum/SWFuplinkspell/animatedead
 	name = "Animate Dead"
